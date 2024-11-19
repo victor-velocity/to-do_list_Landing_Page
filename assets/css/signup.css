@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.signup-form h2 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+    color: #1c1e21;
+    float: left;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 1px solid #dcdfe3;
+    border-radius: 15px;
+    font-size: 16px;
+    outline: none;
+}
+
+.signup-form input[type="text"]:focus,
+.signup-form input[type="email"]:focus,
+.signup-form input[type="password"]:focus {
+    border-color: #1a73e8;
+}
+
+.signup-form .terms {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+    font-size: 14px;
+    color: #606770;
+   
+}
+
+.signup-form .terms input[type="checkbox"] {
+    /* appearance: none; */
+    border: 3px solid #006eff;
+    margin-right: 0.5rem;
+    outline: none;
+    accent-color: #155ab6;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    
+  }
+
+.signup-form .terms a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.signup-form .create-account {
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    width: 100%;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.signup-form .create-account:hover {
+    background-color: #155ab6;
+}
+
+.signup-form .divider {
+    margin: 1.5rem 0;
+    color: #a0a0a0;
+    font-size: 14px;
+    position: relative;
+}
+
+.signup-form .divider::before,
+.signup-form .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+.signup-form .divider::before {
+    left: 0;
+}
+
+.signup-form .divider::after {
+    right: 0;
+}
+
+.signup-form .google-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f2f5;
+    border: 1px solid #dcdfe3;
+    padding: 0.8rem;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #606770;
+    cursor: pointer;
+}
+
+.signup-form .google-signin img {
+    width: 20px;
+    margin-right: 8px;
+    filter: grayscale();
+}
+
+.signup-form .login-link {
+    font-size: 14px;
+    color: #606770;
+    margin-top: 1rem;
+}
+
+.signup-form .login-link a {
+    color: black;
+    text-decoration: none;
+}
