@@ -142,3 +142,25 @@ label {
     font-size: 20px;
     color: #333;
 }
+
+@media (max-width: 768px) {
+    .new-task {
+        width: 90%;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .new-task h1 {
+        font-size: 30px;
+    }
+
+    #taskDesc, #dueDate {
+        width: 100%;
+    }
+
+    .save-button {
+        margin-right: 20px;
+    }
+}

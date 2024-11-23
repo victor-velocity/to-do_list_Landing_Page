@@ -1,19 +1,12 @@
 document.getElementById('addtaskform').addEventListener('submit', async function (event) {
   event.preventDefault();
 
-  // Get input values
   const description = document.getElementById('taskDesc').value;
   const dueDate = document.getElementById('dueDate').value;
 
-  // Debug values
-  console.log("Description:", description);
-  console.log("Due Date:", dueDate);
-  console.log(`Bearer ${localStorage.getItem('todoToken')}`)
 
-  // Check for empty values
   if (!description || !dueDate) {
     document.getElementById('message').textContent = 'Both fields are required!';
-    return;
   }
 
   try {

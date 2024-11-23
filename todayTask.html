@@ -179,59 +179,28 @@
         <h2>Today</h2>
         <div class="task-item">
             <div class="task-info">
-                <input type="checkbox" checked>
+                <div class="check"><i class="fa-solid fa-check"></i></div>
                 <div>
-                    <div class="task-title">Go for <br>a run</div>
-                    <div class="task-time">8:00 AM <br> Jun 14</div>
+                    <div class="task-title">${task.task}</div>
+                    <div class="task-time">${dueDate}</div>
                 </div>
             </div>
-            <span>...</span>
+            <div class="editdiv">
+                <button class="dropdown-icon" onclick="toggleVisibility('${dropdownId}')">
+                    <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-content" id="${dropdownId}" style="display:none;">
+                    <div class="dropdown-item" onclick="editTask('${String(task._id)}', '${task.task}', '${task.due_date}')">Edit</div>
+                    <div class="dropdown-item" onclick="prepareDeleteTask('${String(task._id)}')">Delete</div>
+                </div>
+            </div>
         </div>
-        <div class="task-item">
-            <div class="task-info">
-                <input type="checkbox" checked>
-                <div>
-                    <div class="task-title">Breakfast with <br> Sarah</div>
-                    <div class="task-time">9:00 AM <br> Jun 14</div>
-                </div>
-            </div>
-            <span>...</span>
-        </div>
-        <div class="task-item">
-            <div class="task-info">
-                <input type="checkbox" checked>
-                <div>
-                    <div class="task-title">Finish task list</div>
-                    <div class="task-time">11:00 AM <br> Jun 14</div>
-                </div>
-            </div>
-            <span>...</span>
-        </div>
-        <div class="task-item">
-            <div class="task-info">
-                <input type="checkbox" checked>
-                <div>
-                    <div class="task-title">Call mom</div>
-                    <div class="task-time">2:00 PM <br> Jun 14</div>
-                </div>
-            </div>
-            <span>...</span>
-        </div>
-        <div class="task-item">
-            <div class="task-info">
-                <input type="checkbox" checked>
-                <div>
-                    <div class="task-title">Grocery shopping</div>
-                    <div class="task-time">4:00 PM <br> Jun 14</div>
-                </div>
-            </div>
-            <span>...</span>
         </div>
     </div>
 
     <!-- Add task link -->
     <div class="add-task"><a href="newtask.html">Add a task</a></div>
 </div>
-
+<script src="assets/js/todaytask.js"></script>
 </body>
 </html>

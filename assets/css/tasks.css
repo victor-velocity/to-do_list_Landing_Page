@@ -361,3 +361,29 @@ label {
   color: #333;
   margin-bottom: 20px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+
+  .cancel-button2, .savebutton2 {
+    width: 100%;
+    margin-right: 10px;
+    float: none;
+  }
+
+  .buttondiv2 {
+    width: 90%;
+    float: left;
+  }
+
+  .modal-content {
+    width: 500px;
+  }
+}

@@ -17,7 +17,7 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
     if (data) {
       if (data.token) {
         localStorage.setItem('todoToken', data.token);
-        alert('Signup successful! Redirecting to login...');
+        alert('Login successful!');
         window.location.href = 'task.html';
       } else {
         alert('no token returned. Please log in.');
