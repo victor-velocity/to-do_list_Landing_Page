@@ -151,25 +151,26 @@ main {
 
 /* Container styling */
 .container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-top: 50px;
-    height: auto;
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 /* Individual box styling */
 .box {
     background-color: #ffffff;
     border-radius: 10px;
+    width: 260px;
 }
 
 /* Image styling with rounded edges and zoom effect */
 .box img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    max-height: 150px;
+    width: 260px;
+    height: 230px;
+    border-radius: 10px;
     transition: transform 1s ease-in-out;
     /* Smooth zoom effect */
 }

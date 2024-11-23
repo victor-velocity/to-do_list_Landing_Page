@@ -87,11 +87,26 @@ label {
 
 
 
-input[type="text"]::placeholder {
+#taskDesc::placeholder {
     color: #b0b0b0;
 }
 
-input[type="text"] {
+#taskDesc {
+    padding: 20px;
+    background-color: rgb(229, 226, 226);
+    border: none; 
+    border-radius: 5px;
+    font-size: 19px;
+    color: #333;
+    margin-bottom: 20px;
+    width: 60%; 
+}
+
+#dueDate::placeholder {
+    color: #b0b0b0;
+}
+
+#dueDate {
     padding: 20px;
     background-color: rgb(229, 226, 226);
     border: none; 

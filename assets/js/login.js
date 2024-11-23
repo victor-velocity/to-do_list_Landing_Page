@@ -20,8 +20,7 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         alert('Signup successful! Redirecting to login...');
         window.location.href = 'task.html';
       } else {
-        alert('Signup successful, but no token returned. Please log in.');
-        window.location.href = "task.html";
+        alert('no token returned. Please log in.');
       }
 
     } else {

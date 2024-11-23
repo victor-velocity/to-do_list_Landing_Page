@@ -1,9 +1,15 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const taskList = document.querySelector('.task-list');
-    const token = localStorage.getItem('todoToken'); // Retrieve token from localStorage
+    const token = localStorage.getItem('todoToken');
+    const modal = document.getElementById('task-modal');
+    const deleteModal = document.getElementById('delete-modal'); // Modal for delete
+    const modalForm = document.getElementById('addtaskform');
+    const taskDescInput = document.getElementById('taskDesc');
+    const dueDateInput = document.getElementById('dueDate');
+    let editingTaskId = null;
+    let deletingTaskId = null; // Variable to hold task ID for deletion
 
     try {
-        // Fetch tasks from the backend
         const response = await fetch('https://todo-backend-nluz.onrender.com/api/tasks', {
             method: 'GET',
             headers: {
@@ -14,35 +20,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         if (response.ok) {
-            // Clear existing tasks (if any)
             taskList.innerHTML = `<h2>All Tasks</h2>`;
-            console.log(data)
-
-            // If there are tasks, display them
             if (data) {
-                data.forEach(task => {
-                    const dueDate = task.due_date ? new Date(task.due_date).toLocaleString() : 'No due date';
+                data.forEach((task, index) => {
+                    const dueDate = task.due_date ? new Date(task.due_date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }) : 'No due date';
+
                     const taskItem = document.createElement('div');
                     taskItem.className = 'task-item';
+                    taskItem.id = `task-${task._id}`;
+
+                    const dropdownId = `dropdown-${index}`;
 
                     taskItem.innerHTML = `
-                <div class="task-info">
-                <input type="checkbox">
-                    <div>
-                        <div class="task-title">${task.task}</div>
-                        <div class="task-time">${dueDate}</div>
+                    <div class="task-info">
+                        <div class="check"><i class="fa-solid fa-check"></i></div>
+                        <div>
+                            <div class="task-title">${task.task}</div>
+                            <div class="task-time">${dueDate}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="editdiv">
-                <button class="dropdown-icon" onclick="toggleVisibility()">
-                    <i class="fa fa-ellipsis-h"></i> <!-- Icon for the dropdown -->
-                </button>
-                <div class="dropdown-content" id="myDiv">
-                    <div class="dropdown-item" onclick="editTask()">Edit</div>
-                    <div class="dropdown-item" onclick="deleteTask()">Delete</div>
-                </div>
-                </div>
-            `;
+                    <div class="editdiv">
+                        <button class="dropdown-icon" onclick="toggleVisibility('${dropdownId}')">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-content" id="${dropdownId}" style="display:none;">
+                            <div class="dropdown-item" onclick="editTask('${String(task._id)}', '${task.task}', '${task.due_date}')">Edit</div>
+                            <div class="dropdown-item" onclick="prepareDeleteTask('${String(task._id)}')">Delete</div>
+                        </div>
+                    </div>
+                    `;
                     taskList.appendChild(taskItem);
                 });
             } else {
@@ -56,25 +66,122 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error:', error);
         taskList.innerHTML += '<p>An error occurred while fetching tasks. Please try again.</p>';
     }
+
+    // Edit Task Function
+    window.editTask = function(taskId, taskDesc, dueDate) {
+        editingTaskId = taskId;
+        taskDescInput.value = taskDesc;
+
+        if (dueDate) {
+            const dueDateObj = new Date(dueDate);
+            const formattedDate = dueDateObj.toISOString().split('T')[0];
+            dueDateInput.value = formattedDate;
+        } else {
+            dueDateInput.value = '';
+        }
+
+        modal.style.display = 'block'; // Show the modal
+    };
+
+    modalForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const updatedTaskDesc = taskDescInput.value;
+        const updatedDueDate = dueDateInput.value;
+
+        if (!updatedTaskDesc || !updatedDueDate) {
+            alert("Please fill in both fields.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://todo-backend-nluz.onrender.com/api/tasks/${editingTaskId}`, {
+                method: 'PATCH',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    task: updatedTaskDesc,
+                    due_date: updatedDueDate
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                const updatedTaskItem = document.querySelector(`#task-${editingTaskId}`);
+                if (updatedTaskItem) {
+                    updatedTaskItem.querySelector('.task-title').textContent = updatedTaskDesc;
+                    updatedTaskItem.querySelector('.task-time').textContent = new Date(updatedDueDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    })
+                }
+
+                alert("Task updated successfully!");
+                modal.style.display = 'none';
+            } else {
+                alert("Error updating task: " + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to update task. Please try again later.');
+        }
+    });
+
+    document.getElementById('cancel-button').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Modal for deleting task
+    window.prepareDeleteTask = function(taskId) {
+        deletingTaskId = taskId; // Store taskId for deletion
+        deleteModal.style.display = 'block'; // Show delete modal
+    };
+
+    document.getElementById('cancel-delete-button').addEventListener('click', function() {
+        deleteModal.style.display = 'none'; // Close delete modal
+    });
+
+    document.getElementById('confirm-delete-button').addEventListener('click', async function() {
+        if (deletingTaskId) {
+            try {
+                const response = await fetch(`https://todo-backend-nluz.onrender.com/api/tasks/${deletingTaskId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    const taskToDelete = document.querySelector(`#task-${deletingTaskId}`);
+                    if (taskToDelete) {
+                        taskToDelete.remove(); // Remove task from the list
+                    }
+
+                    alert("Task deleted successfully!");
+                    deleteModal.style.display = 'none'; // Close delete modal
+                } else {
+                    alert("Error deleting task: " + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to delete task. Please try again later.');
+            }
+        }
+    });
 });
 
-function toggleVisibility() {
-    const element = document.getElementById('myDiv');
-    
-    // Toggle the display style
-    if (element.style.display === 'none') {
-      element.style.display = 'block';
-    } else {
-      element.style.display = 'none';
-    }
-  }
-  
+function toggleVisibility(dropdownId) {
+    const allDropdowns = document.querySelectorAll('.dropdown-content');
+    allDropdowns.forEach(dropdown => {
+        if (dropdown.id !== dropdownId) {
+            dropdown.style.display = 'none';
+        }
+    });
 
-function editTask() {
-    document.getElementById('action-result').textContent = 'Edit action triggered';
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
-
-function deleteTask() {
-    document.getElementById('action-result').textContent = 'Delete action triggered';
-}
-

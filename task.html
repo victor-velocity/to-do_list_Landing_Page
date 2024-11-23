@@ -2,250 +2,82 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task List</title>
+  <link rel="stylesheet" href="css/all.css">
+  <link rel="stylesheet" href="assets/css/tasks.css">
 </head>
 
 <body>
-    <!DOCTYPE html>
-    <html lang="en">
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="logoslink"><i class="fa-solid fa-tasks task"></i>
+      <h1 style="font-size: 18px">Tasklist</h1>
+    </a>
+    <div class="nav-links">
+      <a href="todayTask.html">Today</a>
+      <a href="upcoming.html">Upcoming</a>
+      <a href="#">All tasks</a>
+      <a href="newtask.html"><i class="fa-solid fa-plus"></i></a>
+      <div class="profile"></div>
+    </div>
+  </div>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Task List</title>
-        <link rel="stylesheet" href="css/all.css">
-        <link rel="stylesheet" href="assets/css/newtask.css">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+  <!-- Centered Task List Container -->
+  <div class="container">
+    <div class="task-list">
+      <h2>All Tasks</h2>
 
-            body {
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                background-color: #f7f8fa;
-                margin: 0;
-                height: auto;
-            }
+    </div>
+    <div class="add-task"><a href="newtask.html">Add a task</a></div>
+  </div>
 
-            /* Full-width Header */
-            .header {
-                width: 100%;
-                background-color: #f7f8fa;
-                padding: 20px 20px;
-                border-bottom: 1px solid lightgrey;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+  <!-- Modal for Editing Task -->
+  <div id="task-modal" class="modal">
+    <div>
+      <div class="modal-content">
+        <div>
+          <h4>Edit Task</h4>
+          <form id="addtaskform">
+            <label class="edit" for="task-desc">Task description</label>
+            <input type="text" id="taskDesc" class="editinput" placeholder="Enter task description" />
 
-            .header i {
-                padding-right: 20px;
-            }
+            <label class="edit" for="due-date">Due date</label>
+            <input type="date" id="dueDate" class="editinput" placeholder="dd/mm/yyyy" />
 
-            .header h1 {
-                font-size: 24px;
-                color: #333;
-            }
-
-            .nav-links {
-                display: flex;
-                gap: 20px;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .nav-links a {
-                color: #666;
-                text-decoration: none;
-                font-size: 16px;
-            }
-
-            .nav-links a:hover {
-                color: #333;
-            }
-
-            /* Profile picture */
-            .profile {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                background-color: #ddd;
-            }
-
-            /* Centered Main Container */
-            .container {
-                width: 70%;
-                background-color: #f7f8fa;
-                padding: 20px 40px;
-                border-radius: 8px;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                margin-top: 60px;
-                margin-bottom: 30px;
-            }
-
-            /* Task list */
-            .task-list {
-                margin-top: 10px;
-            }
-
-            .task-list h2 {
-                margin-bottom: 10px;
-            }
-
-            .task-item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px 0;
-                /* border-bottom: 1px solid #e0e0e0; */
-            }
-
-            .task-item:last-child {
-                border-bottom: none;
-            }
-
-            .task-info {
-                display: flex;
-                gap: 20px;
-                align-items: center;
-            }
-
-            /* Custom checkbox */
-            .task-info input[type="checkbox"] {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 30px;
-                height: 30px;
-                border: none;
-                background-color: lightgrey;
-                border-radius: 4px;
-                position: relative;
-                cursor: pointer;
-                text-align: center;
-            }
-
-            .task-info input[type="checkbox"]:checked::before {
-                content: "✔";
-                color: #000;
-                font-size: 14px;
-                position: absolute;
-                top: 2px;
-                left: 8px;
-            }
-
-            .task-title {
-                font-size: 20px;
-                color: black;
-            }
-
-            .task-time {
-                font-size: 16px;
-                color: #999;
-                margin-top: 8px;
-            }
-
-            /* Add task link */
-            .add-task {
-                margin-top: 50px;
-                margin-bottom: 20px;
-                text-align: center;
-                color: #666;
-                cursor: pointer;
-            }
-
-            .add-task:hover {
-                color: #333;
-            }
-
-            a {
-                text-decoration: none;
-                color: black;
-            }
-
-            .logoslink {
-                display: flex;
-                align-items: center;
-                flex-wrap: nowrap;
-            }
-
-            .dropdown-icon {
-                background: none;
-                border: none;
-                cursor: pointer;
-                font-size: 20px;
-                color: #333;
-            }
-
-            .dropdown-content {
-                display: none;
-                /* Initially hidden */
-                position: absolute;
-                top: 30px;
-                right: 0;
-                background-color: #f9f9f9;
-                min-width: 120px;
-                border: 1px solid #ddd;
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-                z-index: 1;
-            }
-
-            .editdiv {
-                position: relative;
-            }
-
-            .dropdown-content .dropdown-item {
-                padding: 8px 12px;
-                cursor: pointer;
-            }
-
-            .dropdown-content .dropdown-item:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
-    </head>
-
-    <body>
-
-        <!-- Full-width Header -->
-        <div class="header">
-            <a href="index.html" class="logoslink"><i class="fa-solid fa-tasks task"></i>
-                <h1 style="font-size: 18px;">Tasklist</h1>
-            </a>
-            <div class="nav-links">
-                <a href="todayTask.html">Today</a>
-                <a href="upcoming.html">Upcoming</a>
-                <a href="#">All tasks</a>
-                <a href="newtask.html"><i class="fa-solid fa-plus"></i></a>
+            <div class="buttondiv">
+              <button type="button" id="cancel-button" class="cancel-button">
+                Cancel
+              </button>
+              <button type="submit" class="savebutton">Save</button>
             </div>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Centered Task List Container -->
-        <div class="container">
-            <div class="task-list">
-                <h2>Today</h2>
-                <div class="task-item">
-                    <div class="task-info">
-                        <input type="checkbox" checked>
-                        <div>
-                            <div class="task-title"></div>
-                            <div class="task-time"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add task link -->
-            </div>
-            <div class="add-task"><a href="newtask.html">Add a task</a></div>
-            <script src="assets/js/tasks.js"></script>
-    </body>
+  <!-- Modal for Delete Task Confirmation -->
+  <div id="delete-modal" class="modal">
+    <div>
+      <div class="modal-content">
+        <div>
+          <h3>Are you sure you want to continue this action?</h3>
+          <div class="buttondiv2">
+            <button type="button" id="cancel-delete-button" class="cancel-button2">
+              Cancel
+            </button>
+            <button type="button" id="confirm-delete-button" class="savebutton2">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </html>
+  <script src="assets/js/tasks.js"></script>
 </body>
 
 </html>
