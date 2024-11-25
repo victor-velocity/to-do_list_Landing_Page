@@ -1,6 +1,7 @@
 document.getElementById('addtaskform').addEventListener('submit', async function (event) {
   event.preventDefault();
 
+  const loader = document.getElementById("loader")
   const description = document.getElementById('taskDesc').value;
   const dueDate = document.getElementById('dueDate').value;
 
@@ -10,7 +11,7 @@ document.getElementById('addtaskform').addEventListener('submit', async function
   }
 
   try {
-    // Send task data to backend
+    loader.innerHTML = "<span id='loader'>Loading...</span>"
     const response = await fetch('https://todo-backend-nluz.onrender.com/api/tasks', {
       method: 'POST',
       headers: {
@@ -18,19 +19,22 @@ document.getElementById('addtaskform').addEventListener('submit', async function
         "Authorization": `Bearer ${localStorage.getItem('todoToken')}`
       },
       body: JSON.stringify({
-        task: description,   // Use the correct key `task`
-        due_date: dueDate    // Use the correct key `due_date`
+        task: description,
+        due_date: dueDate
       }),
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      window.location.href = 'task.html'; // Redirect on success
+      loader.innerHTML = "<span id='loader'>Success</span>"
+      window.location.href = 'task.html';
     } else {
+      loader.innerHTML = "<span id='loader'>Save</span>"
       document.getElementById('message').textContent = `Error: ${data.message || 'Unable to create task'}`;
     }
   } catch (error) {
+    loader.innerHTML = "<span id='loader'>Save</span>"
     console.error('Error creating task:', error);
     document.getElementById('message').textContent = 'An error occurred. Please try again.';
   }

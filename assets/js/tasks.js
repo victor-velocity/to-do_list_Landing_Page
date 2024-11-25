@@ -2,12 +2,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const taskList = document.querySelector('.task-list');
     const token = localStorage.getItem('todoToken');
     const modal = document.getElementById('task-modal');
-    const deleteModal = document.getElementById('delete-modal'); // Modal for delete
+    const deleteModal = document.getElementById('delete-modal');
     const modalForm = document.getElementById('addtaskform');
     const taskDescInput = document.getElementById('taskDesc');
     const dueDateInput = document.getElementById('dueDate');
+    const loader = document.getElementById('loader');
     let editingTaskId = null;
-    let deletingTaskId = null; // Variable to hold task ID for deletion
+    let deletingTaskId = null;
 
     try {
         const response = await fetch('https://todo-backend-nluz.onrender.com/api/tasks', {
@@ -56,15 +57,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     taskList.appendChild(taskItem);
                 });
             } else {
-                taskList.innerHTML += '<p>No tasks available.</p>';
+                taskList.innerHTML = '<p>No tasks available.</p>';
             }
         } else {
             console.error('Error fetching tasks:', data.message || 'Unknown error');
-            taskList.innerHTML += `<p>Error: ${data.message || 'Unable to load tasks'}</p>`;
+            taskList.innerHTML = `<p>Error: ${data.message || 'Unable to load tasks'}</p>`;
         }
     } catch (error) {
         console.error('Error:', error);
-        taskList.innerHTML += '<p>An error occurred while fetching tasks. Please try again.</p>';
+        taskList.innerHTML = '<p>An error occurred while fetching tasks. Please try again.</p>';
     }
 
     // Edit Task Function
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             dueDateInput.value = '';
         }
 
-        modal.style.display = 'block'; // Show the modal
+        modal.style.display = 'block';
     };
 
     modalForm.addEventListener('submit', async function(event) {
@@ -136,12 +137,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Modal for deleting task
     window.prepareDeleteTask = function(taskId) {
-        deletingTaskId = taskId; // Store taskId for deletion
-        deleteModal.style.display = 'block'; // Show delete modal
+        deletingTaskId = taskId;
+        deleteModal.style.display = 'block';
     };
 
     document.getElementById('cancel-delete-button').addEventListener('click', function() {
-        deleteModal.style.display = 'none'; // Close delete modal
+        deleteModal.style.display = 'none';
     });
 
     document.getElementById('confirm-delete-button').addEventListener('click', async function() {
@@ -158,11 +159,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (response.ok) {
                     const taskToDelete = document.querySelector(`#task-${deletingTaskId}`);
                     if (taskToDelete) {
-                        taskToDelete.remove(); // Remove task from the list
+                        taskToDelete.remove();
                     }
 
                     alert("Task deleted successfully!");
-                    deleteModal.style.display = 'none'; // Close delete modal
+                    deleteModal.style.display = 'none';
                 } else {
                     alert("Error deleting task: " + data.message);
                 }
